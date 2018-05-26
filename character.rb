@@ -1,5 +1,6 @@
 require_relative './element'
 require_relative './job'
+require_relative './equipment.rb'
 
 class Character
   def initialize
@@ -8,11 +9,14 @@ class Character
     @equipment = nil
   end
 
-  def status
+  def inspect
     {
       element: @element&.name,
       job: @job&.name,
-      equipment: @equipment&.name
+      equipment: @equipment&.name,
+      attack_power: self.attack_power,
+      defense_power: self.defense_power,
+      skill: self.skill,
     }
   end
 
@@ -43,12 +47,14 @@ class Character
   def attack_power
     power = character_attack_power
     power += @element.attack_power(@job) unless @element.nil?
+    power += @equipment.attack_power(@job) unless @equipment.nil?
     power
   end
 
   def defense_power
     power = character_defense_power
     power += @element.defense_power(@job) unless @element.nil?
+    power += @equipment.defense_power(@job) unless @equipment.nil?
     power
   end
 
